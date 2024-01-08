@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: be4f907fd62fb454c9a5a11a6be8a80a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - Ovulo: {instanceID: 0}
+  - Player: {instanceID: 0}
+  - Objetivo_Auxiliar: {instanceID: 0}
+  - _cola_: {instanceID: 0}
+  - drop: {instanceID: 0}
+  - Muerte: {instanceID: 0}
+  - Muerterial: {fileID: 8300000, guid: 896e0c36bcc5b3e4d8e10d79a6479dbd, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -7,6 +7,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class Controlador_general : MonoBehaviour
 {
+    public Camera camara;
+    private float[] aspecto_camara;             //16 x 9        (original)
+    private float[] tamano_camara_original;     //1920 x 1080   (original)
+    private float[] tamano_camara;              //tamaño actual durante la ejecucion del juego
+
+    private float escala_de_las_cosas;
+    public GameObject OrigenCanvas;
+    public GameObject[] cosas_del_canvas;
+
     public GameObject Spawner;
     public GameObject Inicio_oleada;
     public GameObject Player1;
@@ -48,11 +57,20 @@ public class Controlador_general : MonoBehaviour
             Player1.transform.position = spawn_player.transform.position;
         }
         setear_objetos_en_mapa("" + SceneManager.GetActiveScene().name);
+
+        aspecto_camara = new float[2];
+        tamano_camara_original = new float[2];
+        aspecto_camara[0] = 16;             //ancho
+        aspecto_camara[1] = 9;              //alto
+        tamano_camara_original[0] = 1920;   //ancho
+        tamano_camara_original[1] = 1080;   //alto
+        tamano_camara = new float[2];
+
         //Debug.Log("" + SceneManager.GetActiveScene().name);
     }
     private void Update()
     {
-
+        set_tamano_camara();
         if (nivel == "Nivel 3" && oleada_text.text == "Oleada 3" && precentacion_check == false)
         {
             precentacion_check = true;
@@ -128,7 +146,75 @@ public class Controlador_general : MonoBehaviour
 
         
     }
+    private void set_tamano_camara()
+    {
+        /*float tamaño_camara_ = camara.orthographicSize;
+        Debug.Log("El tamaño de la camara es de: " + tamaño_camara_);*/
+        Resolution resolucion = Screen.currentResolution;
+        tamano_camara[0] = resolucion.width; 
+        tamano_camara[1] = resolucion.height;
+        //Debug.Log("El tamaño de la pantalla es de: " + tamano_camara[0] + " x " + tamano_camara[1]);
+        escala_de_las_cosas = obtener_escala();
+        if (escala_de_las_cosas != 1)
+        {
+            Redimencionar_canvas(escala_de_las_cosas);
+        }
+    }
+    private float obtener_escala()
+    {
+        float porcentaje = regla_de_tres(tamano_camara_original[0], tamano_camara[0], 100, false, true);
+        Debug.Log("La pantalla del PC es el " + porcentaje + "% de la pantalla del juego");
+        float escala = regla_de_tres(1, porcentaje, 100, false, false);
+        Debug.Log("La escala de relacion es de " + escala + " a 1");
 
+        return escala;
+    }
+    private float regla_de_tres(float numA, float numB, float resulA, bool sup, bool izq)
+    {
+        float incognita;
+
+        if (sup == true)
+        {
+            if (izq == true)
+            {
+                incognita = (resulA * numA) / numB;
+            }
+            else
+            {
+                incognita = (numA * numB) / resulA;
+            }
+        }
+        else
+        {
+            if (izq == true)
+            {
+                incognita = (resulA * numB) / numA;
+            }
+            else
+            {
+                incognita = (numA * numB) / resulA;
+            }
+        }
+
+        return incognita;
+    }
+    private void Redimencionar_canvas(float escala_)
+    {
+        float OrigenX, OrigenY;
+        OrigenX = OrigenCanvas.transform.position.x;
+        OrigenY = OrigenCanvas.transform.position.y;
+        for (int i = 0; i < cosas_del_canvas.Length; i++)
+        {
+            cosas_del_canvas[i].transform.localScale = new Vector3( cosas_del_canvas[i].transform.localScale.x * escala_, 
+                                                                    cosas_del_canvas[i].transform.localScale.y * escala_, 
+                                                                    cosas_del_canvas[i].transform.localScale.z * escala_);
+            float X = OrigenX + regla_de_tres(1, cosas_del_canvas[i].transform.position.x, escala_, false, true);
+            float Y = OrigenY + regla_de_tres(1, cosas_del_canvas[i].transform.position.y, escala_, false, true);
+            cosas_del_canvas[i].transform.position = new Vector3(X, Y, cosas_del_canvas[i].transform.position.z);
+        }
+        tamano_camara_original[0] = tamano_camara[0];
+        tamano_camara_original[1] = tamano_camara[1];
+    }
     private void setear_objetos_en_mapa(string nivel)
     {
         switch(nivel)

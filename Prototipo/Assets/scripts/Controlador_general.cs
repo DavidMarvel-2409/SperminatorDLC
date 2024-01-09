@@ -208,9 +208,9 @@ public class Controlador_general : MonoBehaviour
             cosas_del_canvas[i].transform.localScale = new Vector3( cosas_del_canvas[i].transform.localScale.x * escala_, 
                                                                     cosas_del_canvas[i].transform.localScale.y * escala_, 
                                                                     cosas_del_canvas[i].transform.localScale.z * escala_);
-            float X = OrigenX + regla_de_tres(1, cosas_del_canvas[i].transform.position.x, escala_, false, true);
-            float Y = OrigenY + regla_de_tres(1, cosas_del_canvas[i].transform.position.y, escala_, false, true);
-            cosas_del_canvas[i].transform.position = new Vector3(X, Y, cosas_del_canvas[i].transform.position.z);
+            //float X = OrigenX + regla_de_tres(1, cosas_del_canvas[i].transform.position.x, escala_, false, true);
+            //float Y = OrigenY + regla_de_tres(1, cosas_del_canvas[i].transform.position.y, escala_, false, true);
+            //cosas_del_canvas[i].transform.position = new Vector3(X, Y, cosas_del_canvas[i].transform.position.z);
         }
         tamano_camara_original[0] = tamano_camara[0];
         tamano_camara_original[1] = tamano_camara[1];
